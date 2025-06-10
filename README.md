@@ -1,22 +1,22 @@
-# 🔥 FireRedTrainAlign：中文語音辨識訓練與推論套件
+# 🔥 FireRedTrainAlign: Chinese Speech Recognition Training and Inference Toolkit
 
-本專案提供針對 [FireRedTeam/FireRedASR-AED-L](https://huggingface.co/FireRedTeam/FireRedASR-AED-L) 模型的訓練與推論程式碼，支援高品質的中文語音轉錄任務。  
-模型採用 **Attention-based Encoder-Decoder（AED）** 架構，適用於普通話及部分方言的語音辨識情境。
-
----
-
-## 🚀 專案特色
-
-- ✅ 支援 Hugging Face 上的 `FireRedASR-AED-L` 模型
-- ✅ 提供完整訓練流程（資料前處理、模型訓練與應用）
-- ✅ 支援 Beam Search 解碼、多音檔批次推論
-- ✅ 模型對中長語音段落進行優化，適用於多種中文語音場景
+This project provides training and inference code for the [FireRedTeam/FireRedASR-AED-L](https://huggingface.co/FireRedTeam/FireRedASR-AED-L) model, supporting high-quality Chinese speech transcription tasks.
+The model adopts an **Attention-based Encoder-Decoder (AED)** architecture, suitable for Mandarin and certain dialects.
 
 ---
 
-## ⚙️ 安裝與環境需求
+## 🚀 Project Features
 
-### 1️⃣ 建立虛擬環境（建議使用 Conda）
+* ✅ Supports the `FireRedASR-AED-L` model on Hugging Face
+* ✅ Provides a complete training pipeline (data preprocessing, model training, and application)
+* ✅ Supports beam search decoding and batch inference for multiple audio files
+* ✅ Optimized for medium to long speech segments, applicable in various Chinese speech scenarios
+
+---
+
+## ⚙️ Installation & Environment Requirements
+
+### 1️⃣ Create a Virtual Environment (Conda recommended)
 
 ```bash
 git clone https://github.com/AUSTIN2526/FireRedTrainAlign.git
@@ -26,41 +26,57 @@ conda create -n firered_asr python=3.10
 conda activate firered_asr
 
 pip install -r requirements.txt
-````
+```
 
-### 2️⃣ 額外依賴
+### 2️⃣ Additional Dependencies
 
-* `ffmpeg`：用於音訊轉檔與取樣率轉換
-* `CUDA`（選用）：若需 GPU 加速訓練或推論
-
----
-
-## 🎯 注意事項與限制
-
-* 建議語音長度 **不超過 60 秒**，以避免解碼錯誤或語句重複
-* 音訊長度若 **超過 200 秒**，可能導致位置編碼（positional encoding）錯誤
-* Batch 推論與訓練目前尚未全面測試
-* 請將模型 `FireRedASR-AED-L` 放置於專案資料夾中使用
+* `ffmpeg`: Required for audio format conversion and resampling
+* `CUDA` (optional): For GPU-accelerated training or inference
 
 ---
 
-## 📁 訓練資料準備方式
+## 🎯 Notes & Limitations
 
-請準備如下格式的 `.tsv` 文字檔，每一列表示一筆語音資料與對應轉錄文字：
+* It is recommended that audio length **does not exceed 60 seconds** to avoid decoding errors or repeated phrases
+* Audio longer than **200 seconds** may cause errors in positional encoding
+* Batch inference and training are **not fully tested** yet
+* Please place the `FireRedASR-AED-L` model in the project directory for use
+
+---
+
+## 📁 Preparing Training Data
+
+Please prepare a `.tsv or .txt` text file in the following format, where each line represents one audio sample and its corresponding transcription:
 
 ```
-ID\t需轉錄文字
-ID\t需轉錄文字
-ID\t需轉錄文字
+ID\tTranscription text
+ID\tTranscription text
+ID\tTranscription text
 ...
 ```
 
 ---
 
-## 📊 模型表現（來自官方論文）
+## 📊 Model Performance (from the official paper)
 
-| 模型名稱             | 參數數量 | AISHELL1 | AISHELL2 | WS Net | WS Meeting | 平均 CER    |
-| ---------------- | ---- | -------- | -------- | ------ | ---------- | --------- |
-| FireRedASR-AED-L | 1.1B | 0.55%    | 2.52%    | 4.88%  | 4.76%      | **3.18%** |
+| Model Name       | Parameters | AISHELL1 | AISHELL2 | WS Net | WS Meeting | Avg. CER  |
+| ---------------- | ---------- | -------- | -------- | ------ | ---------- | --------- |
+| FireRedASR-AED-L | 1.1B       | 0.55%    | 2.52%    | 4.88%  | 4.76%      | **3.18%** |
 
----
+## 🔗 **Speech-to-Text Integration: Supports `med-voice-SHI-detector`**
+
+This project can be integrated with [med-voice-SHI-detector](https://github.com/AUSTIN2526/med-voice-SHI-detector) to automatically transcribe medical voice data into text and perform SHI (Speech-based Health Information) de-identification. The overall processing workflow is as follows:
+
+1. **Speech-to-Text (ASR):**
+   Use `med-voice-SHI-detector` to convert Chinese medical audio files into text.
+
+2. **SHI De-identification:**
+   Input the transcribed text into this project to identify and mask sensitive information such as names, healthcare institutions, and ID numbers.
+
+3. **Output Format:**
+   Generates de-identified text records suitable for downstream NLP tasks or data analysis.
+
+👉 **Installation & Usage**
+Please refer to the [official documentation of `med-voice-SHI-detector`](https://github.com/AUSTIN2526/med-voice-SHI-detector) for detailed instructions.
+
+
